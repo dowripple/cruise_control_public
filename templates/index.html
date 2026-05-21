@@ -1,0 +1,868 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>Cruise Control</title>
+    <!-- reset the CSS -->
+    <link rel="stylesheet" href="static/css/reset.css">
+    <!-- google fonts (Celebrity-style typography) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=Lato:wght@300;400;700&display=swap" rel="stylesheet">
+    <!-- fav icon -->
+    <link rel="shortcut icon" href="static/images/favicon.ico">
+    <!-- bootstrap css-->
+    <link rel="stylesheet" href="static/css/jquery-ui.structure.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">    
+    <!-- css for jquery ui and ui theme -->
+    <link rel="stylesheet" href="static/css/jquery-ui.css">
+    <link rel="stylesheet" href="static/css/jquery-ui.theme.css">  
+    <!-- data tables -->
+    <link rel="stylesheet" href="static/css/datatables.css"/>  
+    <link rel="stylesheet" href="https://cdn.datatables.net/buttons/2.3.6/css/buttons.dataTables.min.css"/> 
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/searchpanes/2.0.2/css/searchPanes.dataTables.min.css"/>    
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/select/1.4.0/css/select.dataTables.min.css"/>
+    <link rel="stylesheet" type="text/css" href="//cdn.datatables.net/searchbuilder/1.3.4/css/searchBuilder.dataTables.min.css"/>
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/searchpanes/2.0.2/css/searchPanes.dataTables.min.css"/>
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/buttons/2.3.6/css/buttons.dataTables.min.css"/>
+
+    <!-- style for page-->
+    <link rel="stylesheet" href="static/css/styles.css?v=20260516b">
+    <!-- jquery -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.18.1/moment.min.js"></script>
+    <script type="text/javascript" src = "https://ajax.googleapis.com/ajax/libs/jquery/3.7.0/jquery.min.js"></script>
+    <script type="text/javascript" src = "static/js/jquery-ui.js"></script>
+    <script type="text/javascript" src = "static/js/datatables.js"></script> 
+    <script type="text/javascript" src = "https://cdn.datatables.net/buttons/2.3.6/js/dataTables.buttons.min.js"></script>
+    <script type="text/javascript" src = "https://cdn.datatables.net/buttons/2.3.6/js/buttons.colVis.min.js"></script>
+    <script type="text/javascript" src = "https://cdn.datatables.net/buttons/2.3.6/js/buttons.html5.min.js"></script>
+    <script type="text/javascript" src = "https://cdn.datatables.net/buttons/2.3.6/js/buttons.print.min.js"></script>
+    <script type="text/javascript" src = "https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script> 
+    <script type="text/javascript" src = "https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/pdfmake.min.js"></script>
+    <script type="text/javascript" src = "https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/vfs_fonts.js"></script> 
+    <script type="text/javascript" src = "https://cdn.datatables.net/plug-ins/1.10.21/sorting/datetime-moment.js"></script>    
+    <script type="text/javascript" src = "https://cdn.datatables.net/select/1.4.0/js/dataTables.select.min.js"></script>
+    <script type="text/javascript" src="https://cdn.datatables.net/datetime/1.1.2/js/dataTables.dateTime.min.js"></script> 
+    <!-- <script type="text/javascript" src="assets/js/jquery-table2excel.min.js"></script>   -->
+    <!-- plotly -->
+    <script src="https://cdn.plot.ly/plotly-2.24.1.min.js"></script>
+    <!-- mapbox gl js (used in port edit dialog) -->
+    <script src="https://api.mapbox.com/mapbox-gl-js/v3.7.0/mapbox-gl.js"></script>
+    <link href="https://api.mapbox.com/mapbox-gl-js/v3.7.0/mapbox-gl.css" rel="stylesheet" />
+    <!-- fullcalendar (travelers tab cruise schedule) -->
+    <script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.11/index.global.min.js"></script>
+</head>
+<body>
+    <div class="container">
+        {% if welcome_message %}
+        <div id="welcome_banner" style="background:linear-gradient(90deg,#fdeef2,#fff5e3);
+                                         border:1px solid #e8c9a8;border-radius:6px;
+                                         padding:10px 16px;margin:12px 0 0;
+                                         text-align:center;font-family:'Cormorant Garamond',serif;
+                                         font-size:1.25rem;color:#8a5a2b;
+                                         box-shadow:0 1px 4px rgba(0,0,0,0.05)">
+            <span style="color:#c0457a;margin-right:6px">&#9825;</span>{{ welcome_message }}<span style="color:#c0457a;margin-left:6px">&#9825;</span>
+        </div>
+        <script>
+            setTimeout(function() {
+                $('#welcome_banner').fadeOut(1000);
+            }, 6000);
+        </script>
+        {% endif %}
+        <div class="row">
+            <div class="col-sm-12">
+                <h4>Cruise Control</h4>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-12">
+                <div id="tabs_main">
+                    <ul>
+                        <li><a href="#tab_cruise_trip">Trips</a></li>
+                        <li><a href="#tab_port">Ports</a></li>
+                        <li><a href="#tab_traveler">Travelers</a></li>
+                        <li><a href="#tab_photos">Photos</a></li>
+                        <li><a href="#tab_insights">Insights</a></li>
+                    </ul>
+                    <div id="tab_cruise_trip">
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <div class="chart_box_header">
+                                    <h5>Cruise trips with ports</h5>
+                                    <!-- map chart -->
+                                    <div id="cruise_map_chart">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>                                           
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <table id="table_cruise_list" class="display compact"  width="100%">
+                                </table>
+                            </div>
+                        </div>    
+                    </div>
+                    <div id="tab_port">
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <div class="chart_box_header">
+                                    <h5>Port list</h5>
+                                    <!-- map chart -->
+                                    <div id="port_chart">                                        
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <table id="table_port_list" class="display compact" width="100%">                                    
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="tab_traveler">
+                        <div class="row row_margin">
+                            <div class="col-sm-12">
+                                <div id="traveler_cruise_calendar" style="margin-bottom:18px"></div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <table id="table_traveler_list" class="display compact" width="100%">
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="tab_photos">
+                        <div id="photos_gallery"></div>
+                    </div>
+                    <div id="tab_insights">
+                        <div id="insights_stats_grid"></div>
+                        <div class="row row_margin">
+                            <div class="col-sm-6">
+                                <div class="chart_box_header">
+                                    <h5>Spending by year</h5>
+                                    <div id="insights_chart_year" style="height:320px"></div>
+                                </div>
+                            </div>
+                            <div class="col-sm-6">
+                                <div class="chart_box_header">
+                                    <h5>Spending by cruise line</h5>
+                                    <div id="insights_chart_line" style="height:320px"></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row row_margin">
+                            <div class="col-sm-12">
+                                <div class="chart_box_header">
+                                    <h5>Cost per cruise (departure date)</h5>
+                                    <div id="insights_chart_per_cruise" style="height:380px"></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row row_margin">
+                            <div class="col-sm-12">
+                                <div class="chart_box_header">
+                                    <h5>Cruise cost per day trend</h5>
+                                    <div id="insights_chart_per_day" style="height:320px"></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row row_margin" id="insights_club_race_row" style="display:none">
+                            <div class="col-sm-12">
+                                <div class="chart_box_header">
+                                    <h5 id="insights_club_race_title">Captain's Club Race 🏆 — who'll get to the lounge first?</h5>
+                                    <div id="insights_chart_club_race" style="height:280px"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-12">
+                <div id="copyright"><br>
+                    <p>&nbsp;&nbsp;Copyright &#169; <span id="current_year"></span> Michael Dowlin. All Rights Reserved.</p>
+                </div>    
+            </div>
+        </div>
+    </div>
+    <!-- floating mini music player; iframe is moved here when the trip
+         dialog closes so playback survives. -->
+    <div id="mini_music_player" style="display:none">
+        <div class="mini-music-header">
+            <span id="mini_music_label">Now playing</span>
+            <button type="button" id="mini_music_close" title="Stop and close">×</button>
+        </div>
+        <div id="mini_music_embed"></div>
+    </div>
+    <!--hidden dialog boxes-->
+    <div>
+    <div id="dialog_port_detail">
+        <div class="row">
+            <div class="col-sm-6">
+                <label for="port_detail_cruise_port">Port name:</label>
+                <input type="text" id="port_detail_cruise_port" class="form-control">
+            </div>
+            <div class="col-sm-3">
+                <label for="port_detail_city">City:</label>
+                <input type="text" id="port_detail_city" class="form-control">
+            </div>
+            <div class="col-sm-3">
+                <label for="port_detail_state">State/Country:</label>
+                <input type="text" id="port_detail_state" class="form-control">
+            </div>
+        </div>
+        <div class="row row_margin">
+            <div class="col-sm-3">
+                <label for="port_detail_latitude">Latitude:</label>
+                <input type="text" id="port_detail_latitude" class="form-control">
+            </div>
+            <div class="col-sm-3">
+                <label for="port_detail_longitude">Longitude:</label>
+                <input type="text" id="port_detail_longitude" class="form-control">
+            </div>
+            <div class="col-sm-2">
+                <label for="port_detail_nearest_airport">Nearest airport:</label>
+                <input type="text" id="port_detail_nearest_airport" class="form-control" maxlength="3" style="text-transform:uppercase" placeholder="IATA">
+            </div>
+            <div class="col-sm-2" style="padding-top:24px">
+                <button type="button" id="port_detail_geocode" class="ui-button ui-widget ui-corner-all">Look up loc.</button>
+            </div>
+            <div class="col-sm-2" id="port_detail_status" style="padding-top:28px;font-size:12px;color:#0D2240"></div>
+        </div>
+        <div class="row row_margin">
+            <div class="col-sm-12">
+                <div id="port_detail_map"></div>
+                <p style="font-size:12px;margin-top:4px;font-style:italic">Drag the marker (or click on the map) to place the dock exactly.</p>
+            </div>
+        </div>
+        <div class="row row_margin">
+            <div class="col-sm-12">
+                <label for="port_detail_port_notes">Notes <span style="font-size:11px;font-weight:normal;color:#6B7383">(restaurants, excursions, tender vs pier, things to skip — shown next to this port in every trip itinerary)</span>:</label>
+                <textarea id="port_detail_port_notes" class="form-control" rows="4"></textarea>
+            </div>
+        </div>
+        <input type="hidden" id="port_detail_cruise_port_id">
+    </div>
+    <div id="dialog_port_notes_view">
+        <div style="margin-bottom:8px"><strong id="port_notes_view_label"></strong></div>
+        <div id="port_notes_view_body" style="white-space:pre-wrap"></div>
+    </div>
+    <div id="dialog_photo_view">
+        <div id="photo_view_image_wrap"><img id="photo_view_image" alt=""></div>
+        <div id="photo_view_caption"></div>
+    </div>
+    <div id="dialog_port_search">
+        <div class="row">
+            <div class="col-sm-12">
+                <label for="port_search_port">Port:</label>
+                <input type="text" id="port_search_port" class="form-control" disabled>
+            </div>
+        </div>
+        <div class="row row_margin">
+            <div class="col-sm-6">
+                <label for="port_search_date_from">Earliest departure:</label>
+                <input type="date" id="port_search_date_from" class="form-control">
+            </div>
+            <div class="col-sm-6">
+                <label for="port_search_date_to">Latest departure:</label>
+                <input type="date" id="port_search_date_to" class="form-control">
+            </div>
+        </div>
+        <div class="row row_margin">
+            <div class="col-sm-6">
+                <label for="port_search_cruise_line">Cruise line (optional):</label>
+                <input type="text" id="port_search_cruise_line" class="form-control" placeholder="e.g. Celebrity, Royal Caribbean">
+            </div>
+            <div class="col-sm-3">
+                <label for="port_search_length">Length (nights):</label>
+                <input type="number" id="port_search_length" class="form-control" min="1" max="200" placeholder="e.g. 7">
+            </div>
+            <div class="col-sm-3">
+                <label for="port_search_keyword">Keyword:</label>
+                <input type="text" id="port_search_keyword" class="form-control" placeholder="optional">
+            </div>
+        </div>
+        <div class="row row_margin">
+            <div class="col-sm-12">
+                <label>Preview query:</label>
+                <input type="text" id="port_search_preview" class="form-control" readonly>
+                <p style="font-size:12px;margin-top:4px;font-style:italic">Each button below opens results in a new tab.</p>
+            </div>
+        </div>
+    </div>
+    <div id="dialog_trip_detail">
+        <div id="trip_detail_header">
+            <div class="row">
+                <div class="col-sm-2">
+                    <label for="trip_detail_cruise_trip_id">Cruise trip ID:</label>
+                    <input type="text" id="trip_detail_cruise_trip_id" class="form-control" disabled="disabled">
+                </div>
+                <div class="col-sm-10">
+                    <label for="trip_detail_cruise_name">Trip name:</label>
+                    <input type="text" id="trip_detail_cruise_name" class="form-control">
+                </div>
+            </div>
+        </div>
+        <div id="trip_detail_tabs">
+            <ul>
+                <li><a href="#trip_detail_tab_main">trip details</a></li>
+                <li><a href="#trip_detail_tab_ports">itinerary</a></li>
+                <li><a href="#trip_detail_tab_cost">cost</a></li>
+                <li><a href="#trip_detail_tab_staff">staff</a></li>
+                <li><a href="#trip_detail_tab_events">events</a></li>
+                <li><a href="#trip_detail_tab_photos">photos</a></li>
+                <li><a href="#trip_detail_tab_music">music</a></li>
+            </ul>
+            <div id="trip_detail_tab_main">
+                <div class="row row_margin">
+                    <div class="col-sm-6">
+                        <label for="trip_detail_cruise_line_id">Cruise line:</label>
+                        <div class="input-group">
+                            <select id="trip_detail_cruise_line_id" class="form-control"></select>
+                            <div class="input-group-append">
+                                <button type="button" class="ui-button ui-widget ui-corner-all" id="trip_detail_add_line" title="Add new cruise line">+</button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-6">
+                        <label for="trip_detail_cruise_ship_id">Ship:</label>
+                        <div class="input-group">
+                            <select id="trip_detail_cruise_ship_id" class="form-control"></select>
+                            <div class="input-group-append">
+                                <button type="button" class="ui-button ui-widget ui-corner-all" id="trip_detail_add_ship" title="Add new ship">+</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row row_margin">
+                    <div class="col-sm-6">
+                        <label for="trip_detail_departure_port_id">Departure port:</label>
+                        <div class="input-group">
+                            <select id="trip_detail_departure_port_id" class="form-control"></select>
+                            <div class="input-group-append">
+                                <button type="button" class="ui-button ui-widget ui-corner-all trip_detail_add_port" data-target="trip_detail_departure_port_id" title="Add new port">+</button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-6">
+                        <label for="trip_detail_arrival_port_id">Arrival port:</label>
+                        <div class="input-group">
+                            <select id="trip_detail_arrival_port_id" class="form-control"></select>
+                            <div class="input-group-append">
+                                <button type="button" class="ui-button ui-widget ui-corner-all trip_detail_add_port" data-target="trip_detail_arrival_port_id" title="Add new port">+</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row row_margin">
+                    <div class="col-sm-3">
+                        <label for="trip_detail_departure_date">Departure date:</label>
+                        <input type="date" id="trip_detail_departure_date" class="form-control">
+                    </div>
+                    <div class="col-sm-3">
+                        <label for="trip_detail_arrival_date">Arrival date:</label>
+                        <input type="date" id="trip_detail_arrival_date" class="form-control">
+                    </div>
+                    <div class="col-sm-3">
+                        <label for="trip_detail_book_date">Book date:</label>
+                        <input type="date" id="trip_detail_book_date" class="form-control">
+                    </div>
+                    <div class="col-sm-3">
+                        <label for="trip_detail_cruise_length_days">Length (days):</label>
+                        <input type="number" id="trip_detail_cruise_length_days" class="form-control" min="0">
+                    </div>
+                </div>
+                <div class="row row_margin">
+                    <div class="col-sm-2">
+                        <label for="trip_detail_deck_number">Deck #:</label>
+                        <input type="number" id="trip_detail_deck_number" class="form-control">
+                    </div>
+                    <div class="col-sm-2">
+                        <label for="trip_detail_room_number">Room #:</label>
+                        <input type="number" id="trip_detail_room_number" class="form-control">
+                    </div>
+                    <div class="col-sm-2" style="padding-top:24px">
+                        <label><input type="checkbox" id="trip_detail_suite_yn"> Suite</label>
+                    </div>
+                    <div class="col-sm-2" style="padding-top:24px">
+                        <label><input type="checkbox" id="trip_detail_agent_yn"> Used agent</label>
+                    </div>
+                    <div class="col-sm-4">
+                        <label for="trip_detail_agent_name">Agent name:</label>
+                        <input type="text" id="trip_detail_agent_name" class="form-control">
+                    </div>
+                </div>
+                <div class="row row_margin">
+                    <div class="col-sm-6">
+                        <label for="trip_detail_cat_sitter">Cat sitter:</label>
+                        <input type="text" id="trip_detail_cat_sitter" class="form-control">
+                    </div>
+                </div>
+                <div class="row row_margin">
+                    <div class="col-sm-12">
+                        <label for="trip_detail_trip_notes">Notes:</label>
+                        <textarea id="trip_detail_trip_notes" class="form-control" rows="2"></textarea>
+                    </div>
+                </div>
+                <div class="row row_margin">
+                    <div class="col-sm-12">
+                        <label for="trip_detail_trip_haiku">Trip Haiku:</label>
+                        <input type="text" id="trip_detail_trip_haiku" class="form-control">
+                    </div>
+                </div>
+                <div id="trip_detail_ship_image_row" class="row row_margin" style="display:none">
+                    <div class="col-sm-12" style="text-align:center">
+                        <img id="trip_detail_ship_image" alt=""
+                             style="max-width:100%;max-height:260px;border-radius:4px;border:1px solid #ddd">
+                        <div id="trip_detail_ship_image_caption"
+                             style="font-size:12px;font-style:italic;color:#666;margin-top:4px"></div>
+                    </div>
+                </div>
+            </div>
+            <div id="trip_detail_tab_ports">
+                <div class="row row_margin">
+                    <div class="col-sm-12">
+                        <button type="button" id="trip_ports_add_row" class="ui-button ui-widget ui-corner-all">Add stop</button>
+                        <button type="button" id="trip_ports_add_new_port" class="ui-button ui-widget ui-corner-all">+ new port</button>
+                        <span style="font-size:12px;font-style:italic;margin-left:12px">Saving replaces all itinerary rows for this trip.</span>
+                    </div>
+                </div>
+                <div class="row row_margin">
+                    <div class="col-sm-12">
+                        <table id="trip_ports_table" class="display compact" style="width:100%">
+                            <thead>
+                                <tr>
+                                    <th style="width:60px">Day</th>
+                                    <th style="width:140px">Date</th>
+                                    <th>Port</th>
+                                    <th style="width:130px">Forecast</th>
+                                    <th>Comment</th>
+                                    <th style="width:50px"></th>
+                                </tr>
+                            </thead>
+                            <tbody></tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <div id="trip_detail_tab_staff">
+                <div class="row row_margin">
+                    <div class="col-sm-12">
+                        <button type="button" id="trip_staff_add_row" class="ui-button ui-widget ui-corner-all">Add staff</button>
+                        <button type="button" id="trip_staff_add_position" class="ui-button ui-widget ui-corner-all">+ position</button>
+                        <span style="font-size:12px;font-style:italic;margin-left:12px">Saving replaces all staff entries for this trip.</span>
+                    </div>
+                </div>
+                <div class="row row_margin">
+                    <div class="col-sm-12">
+                        <table id="trip_staff_table" class="display compact" style="width:100%">
+                            <thead>
+                                <tr>
+                                    <th>Name</th>
+                                    <th style="width:170px">Position</th>
+                                    <th>Location</th>
+                                    <th>Notes</th>
+                                    <th style="width:50px"></th>
+                                </tr>
+                            </thead>
+                            <tbody></tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <div id="trip_detail_tab_events">
+                <div class="row row_margin">
+                    <div class="col-sm-12">
+                        <button type="button" id="trip_event_add_row" class="ui-button ui-widget ui-corner-all">Add event</button>
+                        <span style="font-size:12px;font-style:italic;margin-left:12px">Saving replaces all events for this trip. Events appear on the travelers-tab calendar.</span>
+                    </div>
+                </div>
+                <div class="row row_margin">
+                    <div class="col-sm-12">
+                        <table id="trip_event_table" class="display compact" style="width:100%">
+                            <thead>
+                                <tr>
+                                    <th style="width:130px">Date</th>
+                                    <th style="width:80px">Cruise Day</th>
+                                    <th style="width:90px">Time</th>
+                                    <th style="width:25%">Name</th>
+                                    <th style="width:20%">Location</th>
+                                    <th>Notes</th>
+                                    <th style="width:50px"></th>
+                                </tr>
+                            </thead>
+                            <tbody></tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <div id="trip_detail_tab_photos">
+                <div class="row row_margin">
+                    <div class="col-sm-12">
+                        <input type="file" id="trip_photos_input" multiple accept=".jpg,.jpeg,.png,.gif,.webp,.heic" style="display:none">
+                        <button type="button" id="trip_photos_upload" class="ui-button ui-widget ui-corner-all">Upload photos</button>
+                        <span id="trip_photos_status" style="font-size:12px;font-style:italic;margin-left:12px"></span>
+                        <span style="font-size:12px;font-style:italic;margin-left:12px">jpg/png/gif/webp/heic, up to 10MB each.</span>
+                    </div>
+                </div>
+                <div class="row row_margin">
+                    <div class="col-sm-12">
+                        <div id="trip_photos_grid"></div>
+                        <div id="trip_photos_pager" class="photos-pager" style="display:none">
+                            <button type="button" class="ui-button ui-widget ui-corner-all photos-pager-prev">‹ Prev</button>
+                            <span class="photos-pager-info"></span>
+                            <button type="button" class="ui-button ui-widget ui-corner-all photos-pager-next">Next ›</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div id="trip_detail_tab_music">
+                <div class="row row_margin">
+                    <div class="col-sm-12">
+                        <label for="trip_detail_apple_music_url">Apple Music playlist URL:</label>
+                        <input type="text" id="trip_detail_apple_music_url" class="form-control"
+                               placeholder="https://music.apple.com/us/playlist/...">
+                        <p style="font-size:12px;font-style:italic;margin-top:4px">
+                            In Apple Music: open the playlist &rarr; <b>...</b> &rarr; <b>Share Playlist</b> &rarr; <b>Copy Link</b>, then paste here.
+                            Full playback requires being logged into Apple Music in this browser; otherwise you'll get 30-second previews.
+                        </p>
+                    </div>
+                </div>
+                <div class="row row_margin">
+                    <div class="col-sm-12">
+                        <div id="trip_music_embed_wrap"></div>
+                    </div>
+                </div>
+            </div>
+            <div id="trip_detail_tab_cost">
+                <div class="row row_margin">
+                    <div class="col-sm-3">
+                        <label for="trip_detail_trip_cost">Trip cost:</label>
+                        <input type="text" id="trip_detail_trip_cost" class="form-control" placeholder="0.00">
+                    </div>
+                    <div class="col-sm-3">
+                        <label for="trip_detail_amount_paid">Amount paid:</label>
+                        <input type="text" id="trip_detail_amount_paid" class="form-control" placeholder="0.00">
+                    </div>
+                    <div class="col-sm-2">
+                        <label for="trip_detail_paid_percent">% paid:</label>
+                        <input type="text" id="trip_detail_paid_percent" class="form-control" disabled>
+                    </div>
+                    <div class="col-sm-2">
+                        <label for="trip_detail_amount_due_date">Amount due:</label>
+                        <input type="date" id="trip_detail_amount_due_date" class="form-control">
+                    </div>
+                    <div class="col-sm-2">
+                        <label for="trip_detail_club_points">Club points:</label>
+                        <input type="number" id="trip_detail_club_points" class="form-control">
+                    </div>
+                </div>
+                <hr>
+                <div class="row row_margin">
+                    <div class="col-sm-3" style="padding-top:24px">
+                        <label><input type="checkbox" id="trip_detail_need_airfare_yn"> Need airfare</label>
+                    </div>
+                    <div class="col-sm-3" style="padding-top:24px">
+                        <label><input type="checkbox" id="trip_detail_airfare_purchased_yn"> Airfare purchased</label>
+                        <button type="button" id="trip_detail_search_flights" class="ui-button ui-widget ui-corner-all small-action-btn"
+                                title="Search Google for flights matching this trip">Search</button>
+                    </div>
+                    <div class="col-sm-3">
+                        <label for="trip_detail_airfare_cost">Airfare cost:</label>
+                        <input type="text" id="trip_detail_airfare_cost" class="form-control" placeholder="0.00">
+                    </div>
+                </div>
+                <div class="row row_margin">
+                    <div class="col-sm-3" style="padding-top:24px">
+                        <label><input type="checkbox" id="trip_detail_need_hotel_yn"> Need hotel</label>
+                    </div>
+                    <div class="col-sm-3" style="padding-top:24px">
+                        <label><input type="checkbox" id="trip_detail_hotel_booked_yn"> Hotel booked</label>
+                        <button type="button" id="trip_detail_search_hotels" class="ui-button ui-widget ui-corner-all small-action-btn"
+                                title="Search Google for a hotel near the departure port the night before the cruise">Search</button>
+                    </div>
+                    <div class="col-sm-3">
+                        <label for="trip_detail_hotel_cost">Hotel cost:</label>
+                        <input type="text" id="trip_detail_hotel_cost" class="form-control" placeholder="0.00">
+                    </div>
+                </div>
+                <div class="row row_margin">
+                    <div class="col-sm-3">
+                        <label for="trip_detail_cat_sitter_cost">Cat sitter cost:</label>
+                        <input type="text" id="trip_detail_cat_sitter_cost" class="form-control" placeholder="0.00">
+                    </div>
+                </div>
+                <hr>
+                <div class="row row_margin">
+                    <div class="col-sm-4">
+                        <label for="trip_detail_trip_cost_per_day">Cruise cost per day:</label>
+                        <input type="text" id="trip_detail_trip_cost_per_day" class="form-control" disabled>
+                    </div>
+                    <div class="col-sm-4">
+                        <label for="trip_detail_total_cost">Total cost:</label>
+                        <input type="text" id="trip_detail_total_cost" class="form-control" disabled>
+                    </div>
+                    <div class="col-sm-4">
+                        <label for="trip_detail_total_per_day">Total cost per day:</label>
+                        <input type="text" id="trip_detail_total_per_day" class="form-control" disabled>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    </div>
+    <div id="dialog_line_detail">
+        <div class="row">
+            <div class="col-sm-6">
+                <label for="line_detail_cruise_line">Cruise line:</label>
+                <input type="text" id="line_detail_cruise_line" class="form-control">
+            </div>
+            <div class="col-sm-3">
+                <label for="line_detail_cruise_line_abbr">Abbr:</label>
+                <input type="text" id="line_detail_cruise_line_abbr" class="form-control">
+            </div>
+            <div class="col-sm-3">
+                <label for="line_detail_cruise_line_reward_program">Reward program:</label>
+                <input type="text" id="line_detail_cruise_line_reward_program" class="form-control">
+            </div>
+        </div>
+        <div class="row row_margin">
+            <div class="col-sm-12">
+                <label for="line_detail_cruise_line_url">URL:</label>
+                <input type="text" id="line_detail_cruise_line_url" class="form-control">
+            </div>
+        </div>
+        <div class="row row_margin">
+            <div class="col-sm-12">
+                <label for="line_detail_company_id">Company:</label>
+                <div class="input-group">
+                    <select id="line_detail_company_id" class="form-control"></select>
+                    <div class="input-group-append">
+                        <button type="button" class="ui-button ui-widget ui-corner-all" id="line_detail_add_company" title="Add new company">+</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="dialog_ship_detail">
+        <div class="row">
+            <div class="col-sm-6">
+                <label for="ship_detail_ship_name">Ship name:</label>
+                <input type="text" id="ship_detail_ship_name" class="form-control">
+            </div>
+            <div class="col-sm-6">
+                <label for="ship_detail_cruise_line_id">Cruise line:</label>
+                <select id="ship_detail_cruise_line_id" class="form-control"></select>
+            </div>
+        </div>
+        <div class="row row_margin">
+            <div class="col-sm-3">
+                <label for="ship_detail_year_built">Year built:</label>
+                <input type="number" id="ship_detail_year_built" class="form-control">
+            </div>
+            <div class="col-sm-3">
+                <label for="ship_detail_occupancy">Occupancy:</label>
+                <input type="number" id="ship_detail_occupancy" class="form-control">
+            </div>
+            <div class="col-sm-6">
+                <label for="ship_detail_ship_class">Class:</label>
+                <input type="text" id="ship_detail_ship_class" class="form-control">
+            </div>
+        </div>
+        <div class="row row_margin">
+            <div class="col-sm-3">
+                <label for="ship_detail_casino_deck_number">Casino deck:</label>
+                <input type="number" id="ship_detail_casino_deck_number" class="form-control">
+            </div>
+            <div class="col-sm-3">
+                <label for="ship_detail_lounge_deck_number">Lounge deck:</label>
+                <input type="number" id="ship_detail_lounge_deck_number" class="form-control">
+            </div>
+            <div class="col-sm-3">
+                <label for="ship_detail_restaurant_deck_number">Restaurant deck:</label>
+                <input type="number" id="ship_detail_restaurant_deck_number" class="form-control">
+            </div>
+            <div class="col-sm-3">
+                <label for="ship_detail_retreat_deck_number">Retreat deck:</label>
+                <input type="number" id="ship_detail_retreat_deck_number" class="form-control">
+            </div>
+        </div>
+    </div>
+    <div id="dialog_traveler_detail">
+        <div id="traveler_detail_header">
+            <div class="row">
+                <div class="col-sm-2">
+                    <label for="traveler_detail_passenger_id">Passenger ID:</label>
+                    <input type="text" id="traveler_detail_passenger_id" class="form-control" disabled>
+                </div>
+                <div class="col-sm-7">
+                    <label for="traveler_detail_passenger_name">Name:</label>
+                    <input type="text" id="traveler_detail_passenger_name" class="form-control">
+                </div>
+                <div class="col-sm-3">
+                    <label for="traveler_detail_passenger_abbr">Abbr:</label>
+                    <input type="text" id="traveler_detail_passenger_abbr" class="form-control">
+                </div>
+            </div>
+        </div>
+        <div id="traveler_detail_tabs">
+            <ul>
+                <li><a href="#traveler_tab_details">details</a></li>
+                <li><a href="#traveler_tab_airline">airline rewards</a></li>
+                <li><a href="#traveler_tab_cruise">cruise line rewards</a></li>
+            </ul>
+            <div id="traveler_tab_details">
+                <div class="row row_margin">
+                    <div class="col-sm-4">
+                        <label for="traveler_detail_home_city">Home city:</label>
+                        <input type="text" id="traveler_detail_home_city" class="form-control" placeholder="City, ST">
+                    </div>
+                    <div class="col-sm-2">
+                        <label for="traveler_detail_home_airport">Home airport:</label>
+                        <input type="text" id="traveler_detail_home_airport" class="form-control" maxlength="3" style="text-transform:uppercase" placeholder="IATA">
+                    </div>
+                    <div class="col-sm-6">
+                        <label for="traveler_detail_known_traveler_number">Known traveler number:</label>
+                        <input type="text" id="traveler_detail_known_traveler_number" class="form-control">
+                    </div>
+                </div>
+                <div class="row row_margin">
+                    <div class="col-sm-6">
+                        <label for="traveler_detail_passport_number">Passport number:</label>
+                        <input type="text" id="traveler_detail_passport_number" class="form-control">
+                    </div>
+                    <div class="col-sm-6">
+                        <label for="traveler_detail_passport_expiration_date">Passport expiration:</label>
+                        <input type="date" id="traveler_detail_passport_expiration_date" class="form-control">
+                    </div>
+                </div>
+            </div>
+            <div id="traveler_tab_airline">
+                <div class="row row_margin">
+                    <div class="col-sm-12">
+                        <button type="button" id="traveler_airline_add_row" class="ui-button ui-widget ui-corner-all">Add airline</button>
+                        <button type="button" id="traveler_airline_add_new" class="ui-button ui-widget ui-corner-all">+ new airline</button>
+                        <span id="traveler_airline_status" style="font-size:12px;font-style:italic;margin-left:12px">Saving replaces all airline reward memberships for this traveler.</span>
+                    </div>
+                </div>
+                <div class="row row_margin">
+                    <div class="col-sm-12">
+                        <table id="traveler_airline_table" class="display compact" style="width:100%">
+                            <thead>
+                                <tr>
+                                    <th>Airline</th>
+                                    <th>Member number</th>
+                                    <th style="width:50px"></th>
+                                </tr>
+                            </thead>
+                            <tbody></tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <div id="traveler_tab_cruise">
+                <div class="row row_margin">
+                    <div class="col-sm-12">
+                        <button type="button" id="traveler_cruise_add_row" class="ui-button ui-widget ui-corner-all">Add cruise line</button>
+                        <button type="button" id="traveler_cruise_add_new" class="ui-button ui-widget ui-corner-all">+ new cruise line</button>
+                        <span id="traveler_cruise_status" style="font-size:12px;font-style:italic;margin-left:12px">Saving replaces all cruise line reward memberships for this traveler.</span>
+                    </div>
+                </div>
+                <div class="row row_margin">
+                    <div class="col-sm-12">
+                        <table id="traveler_cruise_table" class="display compact" style="width:100%">
+                            <thead>
+                                <tr>
+                                    <th>Cruise line</th>
+                                    <th style="width:140px">Member number</th>
+                                    <th style="width:300px">Level</th>
+                                    <th style="width:110px">Points</th>
+                                    <th style="width:50px"></th>
+                                </tr>
+                            </thead>
+                            <tbody></tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="dialog_airline_detail">
+        <div class="row">
+            <div class="col-sm-6">
+                <label for="airline_detail_airline_name">Airline name:</label>
+                <input type="text" id="airline_detail_airline_name" class="form-control">
+            </div>
+            <div class="col-sm-3">
+                <label for="airline_detail_airline_abbr">Abbr:</label>
+                <input type="text" id="airline_detail_airline_abbr" class="form-control">
+            </div>
+            <div class="col-sm-3">
+                <label for="airline_detail_airline_reward_program">Reward program:</label>
+                <input type="text" id="airline_detail_airline_reward_program" class="form-control">
+            </div>
+        </div>
+        <div class="row row_margin">
+            <div class="col-sm-12">
+                <label for="airline_detail_airline_url">URL:</label>
+                <input type="text" id="airline_detail_airline_url" class="form-control">
+            </div>
+        </div>
+    </div>
+    <div id="dialog_staff_position_detail">
+        <div class="row">
+            <div class="col-sm-12">
+                <label for="staff_position_detail_name">Position name:</label>
+                <input type="text" id="staff_position_detail_name" class="form-control">
+            </div>
+        </div>
+    </div>
+    <div id="dialog_event_detail">
+        <div class="row" style="margin-bottom:8px">
+            <div class="col-sm-12">
+                <strong id="event_detail_when"></strong>
+            </div>
+        </div>
+        <div class="row" style="margin-bottom:8px">
+            <div class="col-sm-12">
+                <div id="event_detail_name" style="font-size:1.1em;font-weight:600"></div>
+                <div id="event_detail_location" style="color:#555"></div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-12">
+                <div id="event_detail_notes" style="white-space:pre-wrap"></div>
+            </div>
+        </div>
+    </div>
+    <div id="dialog_company_detail">
+        <div class="row">
+            <div class="col-sm-6">
+                <label for="company_detail_company_name">Company:</label>
+                <input type="text" id="company_detail_company_name" class="form-control">
+            </div>
+            <div class="col-sm-3">
+                <label for="company_detail_company_abbr">Abbr:</label>
+                <input type="text" id="company_detail_company_abbr" class="form-control">
+            </div>
+        </div>
+        <div class="row row_margin">
+            <div class="col-sm-12">
+                <label for="company_detail_company_url">URL:</label>
+                <input type="text" id="company_detail_company_url" class="form-control">
+            </div>
+        </div>
+    </div>
+    <!-- hidden inputs -->
+    <input type="hidden" id="mapbox_key" name="mapbox_key" value="{{ mapbox_token }}">
+    <!-- bootstrap-->
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/popper.js@1.14.7/dist/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+    <!-- app -->
+    <script type="module" src="static/js/app.js?v=20260517a"></script>
+</body>
+</html>

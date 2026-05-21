@@ -1,0 +1,596 @@
+/* Celebrity-style palette */
+:root {
+  --cc-navy: #0D2240;
+  --cc-navy-soft: #1A3A5C;
+  --cc-gold: #BD9B60;
+  --cc-gold-soft: #D4B883;
+  --cc-cream: #F8F6F1;
+  --cc-text: #1A2333;
+  --cc-muted: #6B7383;
+}
+
+body {
+  font-family: 'Lato', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  font-weight: 400;
+  color: var(--cc-text);
+  background-color: var(--cc-cream);
+  letter-spacing: 0.01em;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: 'Cormorant Garamond', Georgia, 'Times New Roman', serif;
+  font-weight: 600;
+  text-align: center;
+  color: var(--cc-navy);
+  letter-spacing: 0.02em;
+}
+
+h1 { font-size: 2.4rem; }
+h2 { font-size: 2.0rem; }
+h3 { font-size: 1.7rem; }
+h4 { font-size: 1.5rem; }
+h5 { font-size: 1.2rem; }
+h6 { font-size: 1.0rem; }
+
+
+#cruise_map_chart,
+#port_chart {
+    width: 100%;
+    height: 350px;
+    background-color: var(--cc-navy);
+    border-radius: 20px;
+    overflow: hidden;
+    border: 2px solid var(--cc-gold);
+}
+/*
+#table_cruise_list_wrapper  {
+    background-color: #E87435; 
+}
+*/
+
+.form_label {
+  float: left;
+  text-align: right;
+  margin-right: 15px;
+  width: 120px;
+}
+
+.text_short {
+  width: 80px;
+}
+
+.text_long {
+  width: 400px;
+}
+
+.text_name {
+  width: 300px;
+}
+
+.text_med {
+  width: 120px;
+}
+
+.row_margin {
+  margin-top: 6px;
+}
+
+/* tighten dialog vertical space so trip-details fits without scrolling */
+.ui-dialog .ui-dialog-content {
+  padding: 8px 14px !important;
+}
+.ui-tabs .ui-tabs-panel {
+  padding: 6px 4px;
+}
+#dialog_trip_detail label,
+#dialog_trip_detail .col-sm-1,
+#dialog_trip_detail .col-sm-2,
+#dialog_trip_detail .col-sm-3,
+#dialog_trip_detail .col-sm-4,
+#dialog_trip_detail .col-sm-6,
+#dialog_trip_detail .col-sm-12 {
+  margin-bottom: 0;
+}
+#dialog_trip_detail .form-control {
+  padding: 4px 8px;
+  height: auto;
+}
+
+/* Context menu */
+.context-menu {
+  display: none;
+  position: absolute;
+  border: 1px solid black;
+  border-radius: 3px;
+  width: 100px;
+  background: white;
+  box-shadow: 10px 10px 5px #888888;
+}
+
+.context-menu ul{
+  list-style: none;
+  padding: 2px;
+}
+
+.context-menu ul li{
+  padding: 5px 2px;
+  margin-bottom: 3px;
+  /* font-weight: bold; */
+}
+
+.context-menu ul li:hover{
+  cursor: pointer;
+  background-color: lightgray;
+}
+
+.report_num {
+  text-align: right;
+}
+
+.report_group {
+  text-align: left;
+}
+
+.table_title {
+  font-weight: bold;
+  font-size: large;
+  text-align: center;
+  
+  /* background-color: #CBDBFB; */
+  /* text-shadow: -1px 1px 0 #000, 1px 1px 0 #000, 1px -1px 0 #000, -1px -1px 0 #000; */
+  /* color: #CBDBFB; */
+}
+
+.table_total_title {
+  font-weight: bold;
+  text-align: left;
+}
+.table_footer {
+  padding: 10px;
+}
+.blank_row {
+  padding: 30px;
+}
+.table_subtitle {
+  font-style: italic !important;
+  text-align: center;
+}
+
+.table_subtotal_subtitle {
+  font-style: italic !important;
+  text-align: left;
+}
+
+#port_detail_map {
+    width: 100%;
+    height: 380px;
+    border: 1px solid var(--cc-navy);
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+.chart_box_header {
+  border: 1px solid var(--cc-gold);
+  margin-top: 2px;
+  padding: 12px;
+  border-radius: 18px;
+  color: var(--cc-cream);
+  background-color: var(--cc-navy);
+}
+
+.chart_box_header h5 {
+  color: var(--cc-cream);
+  margin-bottom: 8px;
+}
+
+/* Buttons - Celebrity-style soft gold accent */
+.ui-button.ui-widget,
+button.ui-button {
+  background: var(--cc-navy) !important;
+  color: var(--cc-cream) !important;
+  border: 1px solid var(--cc-gold) !important;
+  font-family: 'Lato', sans-serif !important;
+  letter-spacing: 0.04em;
+  text-transform: none;
+}
+.ui-button.ui-widget:hover,
+button.ui-button:hover {
+  background: var(--cc-navy-soft) !important;
+  border-color: var(--cc-gold-soft) !important;
+  color: #fff !important;
+}
+
+/* Dialog title bar */
+.ui-dialog .ui-dialog-titlebar {
+  background: var(--cc-navy) !important;
+  color: var(--cc-cream) !important;
+  border: none !important;
+  border-bottom: 2px solid var(--cc-gold) !important;
+}
+.ui-dialog .ui-dialog-title {
+  font-family: 'Cormorant Garamond', Georgia, serif;
+  font-weight: 600;
+  font-size: 1.25rem;
+  letter-spacing: 0.03em;
+}
+/* jQuery UI's default close button uses a dark sprite that disappears on
+ * the navy titlebar. We blank everything inside the button and draw a
+ * white "×" with ::after on the button itself — robust regardless of
+ * which icon span structure jQuery UI's button widget produces. */
+.ui-dialog .ui-dialog-titlebar-close,
+.ui-dialog .ui-dialog-titlebar-close.ui-button,
+.ui-dialog .ui-dialog-titlebar-close:hover,
+.ui-dialog .ui-dialog-titlebar-close:focus,
+.ui-dialog .ui-dialog-titlebar-close:active {
+  background: transparent !important;
+  background-image: none !important;
+  border: none !important;
+  box-shadow: none !important;
+  width: 28px !important;
+  height: 28px !important;
+  position: absolute !important;
+  right: 6px !important;
+  top: 50% !important;
+  margin-top: -14px !important;
+  padding: 0 !important;
+  font-size: 0 !important;
+  color: transparent !important;
+  overflow: visible !important;
+  cursor: pointer;
+}
+.ui-dialog .ui-dialog-titlebar-close:hover {
+  background: rgba(255, 255, 255, 0.18) !important;
+  border-radius: 4px;
+}
+.ui-dialog .ui-dialog-titlebar-close > * {
+  display: none !important;
+}
+.ui-dialog .ui-dialog-titlebar-close::after {
+  content: "\00D7";
+  display: block;
+  position: absolute;
+  inset: 0;
+  font-family: Arial, sans-serif;
+  font-size: 26px;
+  font-weight: 700;
+  line-height: 28px;
+  text-align: center;
+  color: #FFFFFF;
+  text-shadow: 0 0 1px rgba(0, 0, 0, 0.4);
+  pointer-events: none;
+}
+
+/* Tabs */
+.ui-tabs .ui-tabs-nav {
+  background: transparent !important;
+  border: none !important;
+  border-bottom: 1px solid var(--cc-gold) !important;
+  padding: 0 !important;
+  margin-bottom: 6px;
+}
+.ui-tabs .ui-tabs-nav li.ui-tabs-tab,
+.ui-tabs .ui-tabs-nav li.ui-state-default,
+.ui-tabs .ui-tabs-nav li.ui-state-hover,
+.ui-tabs .ui-tabs-nav li.ui-tabs-active,
+.ui-tabs .ui-tabs-nav li.ui-state-active {
+  background: transparent !important;
+  background-image: none !important;
+  border: none !important;
+  margin: 0 4px -1px 0 !important;
+}
+.ui-tabs .ui-tabs-nav .ui-tabs-anchor {
+  font-family: 'Lato', sans-serif;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  font-size: 0.85rem;
+  color: var(--cc-navy) !important;
+  padding: .55em 1em;
+  font-weight: 400;
+}
+.ui-tabs .ui-tabs-nav li.ui-tabs-active,
+.ui-tabs .ui-tabs-nav li.ui-state-active {
+  border-bottom: 2px solid var(--cc-gold) !important;
+}
+.ui-tabs .ui-tabs-nav li.ui-tabs-active .ui-tabs-anchor,
+.ui-tabs .ui-tabs-nav li.ui-state-active .ui-tabs-anchor {
+  color: var(--cc-gold) !important;
+  font-weight: 700;
+}
+.ui-tabs .ui-tabs-nav li.ui-state-hover .ui-tabs-anchor {
+  color: var(--cc-navy-soft) !important;
+}
+.ui-tabs .ui-tabs-panel {
+  background: transparent;
+  border: none;
+}
+
+/* Form inputs */
+.form-control {
+  border: 1px solid #d6cdb8;
+  border-radius: 4px;
+  font-family: 'Lato', sans-serif;
+}
+.form-control:focus {
+  border-color: var(--cc-gold);
+  box-shadow: 0 0 0 0.15rem rgba(189, 155, 96, 0.18);
+  outline: none;
+}
+
+label {
+  color: var(--cc-navy);
+  font-weight: 700;
+  font-size: 0.85rem;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+/* Page title block */
+h4 {
+  margin: 14px 0 6px;
+}
+
+/* Table sheen */
+table.dataTable thead th {
+  background: var(--cc-navy);
+  color: var(--cc-cream);
+  font-family: 'Lato', sans-serif;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  font-size: 0.8rem;
+  border-bottom: 2px solid var(--cc-gold) !important;
+}
+
+#trip_event_table thead th {
+  text-align: center;
+  vertical-align: middle;
+}
+
+/* Insights tab — lifetime stat tiles */
+#insights_stats_grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 14px;
+  margin: 18px 0;
+}
+.insights-tile {
+  background: var(--cc-navy);
+  color: var(--cc-cream);
+  border: 2px solid var(--cc-gold);
+  border-radius: 10px;
+  padding: 14px 16px;
+  text-align: center;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+}
+.insights-tile .tile-value {
+  font-family: 'Cormorant Garamond', Georgia, serif;
+  font-size: 2.0rem;
+  font-weight: 700;
+  color: var(--cc-gold-soft);
+  line-height: 1.1;
+  margin-bottom: 4px;
+}
+.insights-tile .tile-label {
+  font-size: 0.8rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--cc-cream);
+  opacity: 0.85;
+}
+.insights-tile .tile-sub {
+  display: block;
+  margin-top: 4px;
+  font-size: 0.75rem;
+  color: var(--cc-gold-soft);
+  font-style: italic;
+}
+table.dataTable tbody tr:hover {
+  background: rgba(189, 155, 96, 0.08);
+}
+
+/* Photos grid (Trip dialog → photos tab) */
+#trip_photos_grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+.trip-photo-tile {
+  width: 180px;
+  border: 1px solid var(--cc-gold);
+  border-radius: 6px;
+  overflow: hidden;
+  background: white;
+  display: flex;
+  flex-direction: column;
+}
+.trip-photo-tile img {
+  width: 100%;
+  height: 140px;
+  object-fit: cover;
+  display: block;
+  cursor: pointer;
+  background: var(--cc-cream);
+}
+.trip-photo-tile .photo-caption {
+  border: none;
+  border-top: 1px solid #eee;
+  padding: 4px 6px;
+  font-size: 12px;
+  text-transform: none;
+  letter-spacing: 0;
+  border-radius: 0;
+}
+.trip-photo-tile .photo-caption:focus {
+  background: rgba(189, 155, 96, 0.06);
+}
+.trip-photo-tile .photo-actions {
+  text-align: right;
+  padding: 2px 4px;
+  border-top: 1px solid #eee;
+}
+.trip-photo-tile .photo-delete {
+  padding: 0 8px !important;
+  font-size: 14px !important;
+  line-height: 1.2 !important;
+}
+
+/* DataTables SearchBuilder selects style their <select> with white-on-navy,
+   which leaks into <option> elements -> options become invisible against
+   the system-default white background. Force option contrast back. */
+.dtsb-searchBuilder select option,
+.dtsb-criteria select option {
+  background-color: white;
+  color: var(--cc-text);
+}
+.dtsb-searchBuilder select option:checked,
+.dtsb-criteria select option:checked {
+  background-color: var(--cc-navy);
+  color: var(--cc-cream);
+}
+
+.small-action-btn {
+  margin-left: 8px;
+  padding: 1px 10px !important;
+  font-size: 11px !important;
+  letter-spacing: 0.04em !important;
+}
+
+#trip_music_embed_wrap iframe {
+  width: 100%;
+  height: calc(100vh - 320px);
+  min-height: 450px;
+  max-height: 800px;
+  background: transparent;
+  border-radius: 12px;
+}
+
+/* Floating mini music player — only visible while audio is playing
+   from a closed trip dialog. */
+#mini_music_player {
+  position: fixed;
+  bottom: 16px;
+  right: 16px;
+  width: 360px;
+  background: var(--cc-cream);
+  border: 1px solid var(--cc-gold);
+  border-radius: 8px;
+  box-shadow: 0 4px 16px rgba(0,0,0,0.18);
+  overflow: hidden;
+  z-index: 9000;
+}
+.mini-music-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 6px 10px;
+  background: var(--cc-navy);
+  color: var(--cc-cream);
+  font-size: 13px;
+  font-weight: 600;
+}
+#mini_music_close {
+  background: none;
+  border: none;
+  color: var(--cc-cream);
+  font-size: 18px;
+  cursor: pointer;
+  padding: 0 6px;
+  line-height: 1;
+}
+#mini_music_close:hover { color: var(--cc-gold-soft); }
+#mini_music_embed iframe {
+  width: 100%;
+  height: 175px;
+  border: 0;
+  display: block;
+}
+
+#copyright {
+  color: var(--cc-muted);
+  font-size: 0.8rem;
+  margin-top: 18px;
+}
+
+/* Photos tab — gallery grouped by cruise trip */
+.photos-trip {
+  margin: 18px 0 28px;
+}
+.photos-trip-header {
+  font-family: 'Cormorant Garamond', Georgia, serif;
+  font-size: 1.25rem;
+  color: var(--cc-navy);
+  border-left: 6px solid var(--cc-navy);
+  padding-left: 10px;
+  margin-bottom: 10px;
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+.photos-trip-header .photos-trip-dates {
+  font-family: 'Lato', sans-serif;
+  font-size: 0.85rem;
+  color: var(--cc-muted);
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+.photos-trip-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+  gap: 12px;
+}
+.photos-trip-thumb {
+  border: 4px solid var(--cc-navy);
+  border-radius: 4px;
+  overflow: hidden;
+  aspect-ratio: 1 / 1;
+  background: var(--cc-cream);
+}
+.photos-trip-thumb img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  cursor: zoom-in;
+}
+#photo_view_image_wrap {
+  text-align: center;
+  background: var(--cc-navy);
+  border-radius: 4px;
+  padding: 6px;
+}
+#photo_view_image {
+  max-width: 100%;
+  max-height: 78vh;
+  display: inline-block;
+  object-fit: contain;
+}
+#photo_view_caption {
+  margin-top: 8px;
+  font-size: 0.9rem;
+  color: var(--cc-muted);
+  text-align: center;
+  font-style: italic;
+}
+.photos-empty {
+  color: var(--cc-muted);
+  font-style: italic;
+  padding: 12px 0;
+}
+.photos-pager {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 14px;
+  margin-top: 10px;
+}
+.photos-pager .photos-pager-info {
+  font-size: 0.85rem;
+  color: var(--cc-muted);
+  letter-spacing: 0.04em;
+  min-width: 110px;
+  text-align: center;
+}
+.photos-pager button[disabled] {
+  opacity: 0.45;
+  cursor: not-allowed;
+}

@@ -1,0 +1,240 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>{{ trip.cruise_name or trip.ship_name }} — Itinerary</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=Lato:wght@300;400;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --navy: #0D2240;
+            --gold: #BD9B60;
+            --cream: #F8F6F1;
+            --muted: #6B7383;
+        }
+        body {
+            font-family: 'Lato', Helvetica, Arial, sans-serif;
+            color: #1A2333;
+            background: #fff;
+            margin: 0;
+            padding: 24px 36px;
+            font-size: 13px;
+            line-height: 1.45;
+        }
+        h1, h2, h3 {
+            font-family: 'Cormorant Garamond', Georgia, serif;
+            color: var(--navy);
+            margin: 0 0 6px 0;
+            font-weight: 700;
+        }
+        h1 { font-size: 28px; }
+        h2 { font-size: 18px; border-bottom: 2px solid var(--gold); padding-bottom: 3px; margin-top: 22px; }
+        .subtle { color: var(--muted); }
+        .cruise-header {
+            border-bottom: 3px double var(--gold);
+            padding-bottom: 14px;
+            margin-bottom: 6px;
+        }
+        .cruise-header .meta {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 18px;
+            margin-top: 6px;
+            font-size: 13px;
+        }
+        .cruise-header .meta strong { color: var(--navy); }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 6px 0;
+            font-size: 12px;
+        }
+        th {
+            text-align: left;
+            background: var(--navy);
+            color: var(--cream);
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.06em;
+            font-size: 10.5px;
+            padding: 5px 8px;
+        }
+        td {
+            border-bottom: 1px solid #ddd;
+            padding: 6px 8px;
+            vertical-align: top;
+        }
+        tr:nth-child(even) td { background: #fafafa; }
+        .cabin-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 18px;
+            margin-top: 6px;
+        }
+        .cabin-grid .box {
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            padding: 10px 14px;
+        }
+        .cabin-grid .box .label {
+            font-size: 10.5px;
+            text-transform: uppercase;
+            letter-spacing: 0.06em;
+            color: var(--muted);
+            margin-bottom: 2px;
+        }
+        .cabin-grid .box .val {
+            font-size: 15px;
+            color: var(--navy);
+            font-weight: 600;
+        }
+        .costs-table td.num { text-align: right; font-variant-numeric: tabular-nums; }
+        .costs-table td.total {
+            border-top: 2px solid var(--navy);
+            font-weight: 700;
+            color: var(--navy);
+        }
+        .notes-block {
+            white-space: pre-wrap;
+            background: var(--cream);
+            border-left: 3px solid var(--gold);
+            padding: 8px 12px;
+            border-radius: 0 4px 4px 0;
+        }
+        .port-notes {
+            margin-top: 4px;
+            font-size: 11px;
+            color: var(--muted);
+            font-style: italic;
+            white-space: pre-wrap;
+        }
+        .toolbar {
+            position: fixed;
+            top: 12px;
+            right: 12px;
+            display: flex;
+            gap: 8px;
+        }
+        .toolbar button {
+            background: var(--navy);
+            color: var(--cream);
+            border: none;
+            padding: 8px 14px;
+            border-radius: 4px;
+            font-size: 13px;
+            cursor: pointer;
+            font-family: inherit;
+        }
+        .toolbar button:hover { background: #1A3A5C; }
+        @media print {
+            body { padding: 0.5in; font-size: 11px; }
+            .toolbar { display: none; }
+            tr { page-break-inside: avoid; }
+            h2 { page-break-after: avoid; }
+        }
+    </style>
+</head>
+<body>
+    <div class="toolbar">
+        <button onclick="window.print()">Print</button>
+        <button onclick="window.close()">Close</button>
+    </div>
+
+    <div class="cruise-header">
+        <h1>{{ trip.cruise_name or trip.ship_name }}</h1>
+        <div class="subtle">{{ trip.cruise_line }}{% if trip.company_name and trip.company_name != trip.cruise_line %} ({{ trip.company_name }}){% endif %} &middot; {{ trip.ship_name }}{% if trip.year_built %}, {{ trip.year_built }}{% endif %}</div>
+        <div class="meta">
+            {% if trip.departure_date %}<div><strong>Departs:</strong> {{ trip.departure_date_long or trip.departure_date }}{% if trip.departure_port %} from {{ trip.departure_port }} ({{ trip.departure_city }}){% endif %}</div>{% endif %}
+            {% if trip.arrival_date %}<div><strong>Returns:</strong> {{ trip.arrival_date_long or trip.arrival_date }}{% if trip.arrival_port %} to {{ trip.arrival_port }} ({{ trip.arrival_city }}){% endif %}</div>{% endif %}
+            {% if trip.cruise_length_days %}<div><strong>Length:</strong> {{ trip.cruise_length_days }} days</div>{% endif %}
+            {% if trip.book_date %}<div><strong>Booked:</strong> {{ trip.book_date }}</div>{% endif %}
+        </div>
+    </div>
+
+    {% if ports %}
+    <h2>Itinerary</h2>
+    <table>
+        <thead>
+            <tr><th style="width:50px">Day</th><th style="width:110px">Date</th><th>Port</th><th>Comment</th></tr>
+        </thead>
+        <tbody>
+            {% for p in ports %}
+            <tr>
+                <td>{{ p.cruise_trip_day if p.cruise_trip_day is not none else '' }}</td>
+                <td>{{ p.cruise_trip_date if p.cruise_trip_date else '' }}</td>
+                <td>
+                    <strong>{% if p.cruise_port %}{{ p.cruise_port }}{% if p.city %} &mdash; {{ p.city }}{% if p.state %}, {{ p.state }}{% endif %}{% endif %}{% else %}<span class="subtle">At sea</span>{% endif %}</strong>
+                    {% if p.port_notes %}<div class="port-notes">{{ p.port_notes }}</div>{% endif %}
+                </td>
+                <td>{{ p.cruise_trip_comment or '' }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    {% endif %}
+
+    {% if events %}
+    <h2>Events</h2>
+    <table>
+        <thead>
+            <tr><th style="width:110px">Date</th><th style="width:80px">Time</th><th>Event</th><th>Location</th><th>Notes</th></tr>
+        </thead>
+        <tbody>
+            {% for e in events %}
+            <tr>
+                <td>{{ e.event_date if e.event_date else '' }}</td>
+                <td>{{ e.event_time_str or '' }}</td>
+                <td><strong>{{ e.event_name or '' }}</strong></td>
+                <td>{{ e.event_location or '' }}</td>
+                <td>{{ e.event_notes or '' }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    {% endif %}
+
+    <h2>Cabin &amp; Booking</h2>
+    <div class="cabin-grid">
+        <div class="box">
+            <div class="label">Cabin</div>
+            <div class="val">
+                {% if trip.deck_number %}Deck {{ trip.deck_number }}{% endif %}
+                {% if trip.room_number %} &middot; Room {{ trip.room_number }}{% endif %}
+                {% if trip.suite_yn == '1' %} &middot; Suite{% endif %}
+                {% if not trip.deck_number and not trip.room_number %}<span class="subtle">—</span>{% endif %}
+            </div>
+        </div>
+        <div class="box">
+            <div class="label">Travel Agent</div>
+            <div class="val">
+                {% if trip.agent_yn == '1' and trip.agent_name %}{{ trip.agent_name }}
+                {% elif trip.agent_yn == '1' %}<span class="subtle">(unspecified)</span>
+                {% else %}<span class="subtle">Booked direct</span>{% endif %}
+            </div>
+        </div>
+        {% if trip.cat_sitter %}
+        <div class="box">
+            <div class="label">Cat Sitter</div>
+            <div class="val">{{ trip.cat_sitter }}</div>
+        </div>
+        {% endif %}
+    </div>
+
+    <h2>Costs</h2>
+    <table class="costs-table" style="max-width:380px">
+        <tbody>
+            <tr><td>Cruise</td><td class="num">${{ '{:,.0f}'.format(costs.cruise) }}</td></tr>
+            <tr><td>Airfare</td><td class="num">${{ '{:,.0f}'.format(costs.airfare) }}</td></tr>
+            <tr><td>Hotel</td><td class="num">${{ '{:,.0f}'.format(costs.hotel) }}</td></tr>
+            <tr><td>Cat sitter</td><td class="num">${{ '{:,.0f}'.format(costs.cat_sitter) }}</td></tr>
+            <tr><td class="total">Total</td><td class="num total">${{ '{:,.0f}'.format(costs.total) }}</td></tr>
+            <tr><td>Paid</td><td class="num">${{ '{:,.0f}'.format(costs.paid) }} ({{ '{:.0f}'.format(costs.paid_pct) }}%)</td></tr>
+            <tr><td>Balance</td><td class="num">${{ '{:,.0f}'.format(costs.balance) }}</td></tr>
+        </tbody>
+    </table>
+
+    {% if trip.trip_notes %}
+    <h2>Notes</h2>
+    <div class="notes-block">{{ trip.trip_notes }}</div>
+    {% endif %}
+</body>
+</html>

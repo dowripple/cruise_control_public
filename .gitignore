@@ -1,0 +1,8 @@
+backup/*.log
+backup/*_preview.txt
+__pycache__/
+*.pyc
+.flask_secret
+serve.out.log
+serve.err.log
+uploads/

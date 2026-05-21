@@ -17,7 +17,7 @@
     <clipPath id="inside">
       <circle cx="256" cy="256" r="228"/>
     </clipPath>
-    <path id="bottomcurve" d="M 76,256 a 180,180 0 0 0 360,0" fill="none"/>
+    <path id="rimcurve" d="M 14,256 a 242,242 0 1 0 484,0" fill="none"/>
   </defs>
 
   <!-- Outer rim -->
@@ -92,39 +92,45 @@
     <path d="M -10,420 Q 60,412 120,420 T 250,420 T 380,420 T 522,415" stroke="#F8F6F1" stroke-width="2" fill="none" opacity="0.55"/>
     <path d="M -10,455 Q 70,448 140,455 T 280,455 T 420,455 T 522,450" stroke="#F8F6F1" stroke-width="2" fill="none" opacity="0.4"/>
 
-    <!-- Palm tree LEFT -->
-    <g transform="translate(50,360)">
-      <path d="M 8,140 Q 0,80 6,20 Q 8,8 14,0" stroke="#7A4F2B" stroke-width="9" fill="none" stroke-linecap="round"/>
-      <g fill="#2E8B57" stroke="#0E5A36" stroke-width="1.2" stroke-linejoin="round">
-        <path d="M 14,0 Q -25,-12 -52,-2 Q -30,2 -10,8 Q 0,5 14,0"/>
-        <path d="M 14,0 Q 42,-22 70,-26 Q 50,-8 28,0 Q 20,1 14,0"/>
-        <path d="M 14,0 Q -8,-32 -22,-54 Q -4,-32 4,-15 Q 10,-5 14,0"/>
-        <path d="M 14,0 Q 30,-32 55,-52 Q 36,-25 24,-10 Q 18,-3 14,0"/>
-        <path d="M 14,0 Q -22,8 -48,22 Q -22,12 -2,8 Q 8,5 14,0"/>
+    <!-- Tropical island LEFT -->
+    <g transform="translate(80, 410)">
+      <!-- Sand mound -->
+      <ellipse cx="0" cy="0" rx="46" ry="9" fill="#E8D097"/>
+      <ellipse cx="0" cy="-2" rx="38" ry="5" fill="#F0DCA8"/>
+      <!-- Palm trunk -->
+      <path d="M -4,-2 Q -10,-30 -4,-58 Q -2,-66 4,-72" stroke="#3D2914" stroke-width="4.5" fill="none" stroke-linecap="round"/>
+      <!-- Palm fronds (silhouette) -->
+      <g fill="#1E5A36" stroke="#0E3A1F" stroke-width="0.8" stroke-linejoin="round">
+        <path d="M 4,-72 Q -16,-82 -34,-72 Q -18,-74 -4,-68 Z"/>
+        <path d="M 4,-72 Q 22,-82 38,-66 Q 22,-72 10,-68 Z"/>
+        <path d="M 4,-72 Q -8,-92 -18,-100 Q -2,-86 2,-76 Z"/>
+        <path d="M 4,-72 Q 18,-92 28,-100 Q 14,-86 8,-76 Z"/>
+        <path d="M 4,-72 Q -14,-68 -28,-58 Q -12,-66 0,-66 Z"/>
       </g>
-      <circle cx="8"  cy="3" r="3.5" fill="#5D4037"/>
-      <circle cx="16" cy="5" r="3.5" fill="#5D4037"/>
+      <!-- Coconut -->
+      <circle cx="2" cy="-66" r="2.5" fill="#3D2914"/>
     </g>
 
-    <!-- Palm tree RIGHT (mirrored) -->
-    <g transform="translate(462,365) scale(-1, 1)">
-      <path d="M 8,140 Q 0,80 6,20 Q 8,8 14,0" stroke="#7A4F2B" stroke-width="9" fill="none" stroke-linecap="round"/>
-      <g fill="#2E8B57" stroke="#0E5A36" stroke-width="1.2" stroke-linejoin="round">
-        <path d="M 14,0 Q -25,-12 -52,-2 Q -30,2 -10,8 Q 0,5 14,0"/>
-        <path d="M 14,0 Q 42,-22 70,-26 Q 50,-8 28,0 Q 20,1 14,0"/>
-        <path d="M 14,0 Q -8,-32 -22,-54 Q -4,-32 4,-15 Q 10,-5 14,0"/>
-        <path d="M 14,0 Q 30,-32 55,-52 Q 36,-25 24,-10 Q 18,-3 14,0"/>
-        <path d="M 14,0 Q -22,8 -48,22 Q -22,12 -2,8 Q 8,5 14,0"/>
+    <!-- Tropical island RIGHT (mirrored) -->
+    <g transform="translate(432, 410) scale(-1, 1)">
+      <ellipse cx="0" cy="0" rx="46" ry="9" fill="#E8D097"/>
+      <ellipse cx="0" cy="-2" rx="38" ry="5" fill="#F0DCA8"/>
+      <path d="M -4,-2 Q -10,-30 -4,-58 Q -2,-66 4,-72" stroke="#3D2914" stroke-width="4.5" fill="none" stroke-linecap="round"/>
+      <g fill="#1E5A36" stroke="#0E3A1F" stroke-width="0.8" stroke-linejoin="round">
+        <path d="M 4,-72 Q -16,-82 -34,-72 Q -18,-74 -4,-68 Z"/>
+        <path d="M 4,-72 Q 22,-82 38,-66 Q 22,-72 10,-68 Z"/>
+        <path d="M 4,-72 Q -8,-92 -18,-100 Q -2,-86 2,-76 Z"/>
+        <path d="M 4,-72 Q 18,-92 28,-100 Q 14,-86 8,-76 Z"/>
+        <path d="M 4,-72 Q -14,-68 -28,-58 Q -12,-66 0,-66 Z"/>
       </g>
-      <circle cx="8"  cy="3" r="3.5" fill="#5D4037"/>
-      <circle cx="16" cy="5" r="3.5" fill="#5D4037"/>
+      <circle cx="2" cy="-66" r="2.5" fill="#3D2914"/>
     </g>
   </g>
 
-  <!-- Curved wordmark along bottom of rim -->
+  <!-- Curved wordmark along the navy rim -->
   <text fill="#BD9B60" font-family="'Cormorant Garamond', Georgia, 'Times New Roman', serif"
-        font-size="34" font-weight="700" letter-spacing="8">
-    <textPath href="#bottomcurve" startOffset="50%" text-anchor="middle">CRUISE · CONTROL</textPath>
+        font-size="20" font-weight="700" letter-spacing="6" dominant-baseline="middle">
+    <textPath href="#rimcurve" startOffset="50%" text-anchor="middle">CRUISE · CONTROL</textPath>
   </text>
 
   <!-- Tiny anchor accents at the top of the rim -->

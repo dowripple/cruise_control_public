@@ -1,3 +1,7 @@
+<p align="center">
+  <img src="static/images/logo.svg" alt="Cruise Control" width="220" height="220">
+</p>
+
 # Cruise Control
 
 A web app for cruise enthusiasts — the people who, the minute they step off

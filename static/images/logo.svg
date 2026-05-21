@@ -1,0 +1,135 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="512" height="512" role="img" aria-label="Cruise Control">
+  <title>Cruise Control</title>
+  <defs>
+    <linearGradient id="sky" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%"  stop-color="#FFD89B"/>
+      <stop offset="55%" stop-color="#FF8C69"/>
+      <stop offset="100%" stop-color="#8B4A8C"/>
+    </linearGradient>
+    <linearGradient id="ocean" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%"   stop-color="#3FB8AF"/>
+      <stop offset="100%" stop-color="#143C5C"/>
+    </linearGradient>
+    <radialGradient id="sunGlow" cx="0.5" cy="0.5" r="0.5">
+      <stop offset="0%"   stop-color="#FFE066" stop-opacity="0.55"/>
+      <stop offset="100%" stop-color="#FFE066" stop-opacity="0"/>
+    </radialGradient>
+    <clipPath id="inside">
+      <circle cx="256" cy="256" r="228"/>
+    </clipPath>
+    <path id="bottomcurve" d="M 76,256 a 180,180 0 0 0 360,0" fill="none"/>
+  </defs>
+
+  <!-- Outer rim -->
+  <circle cx="256" cy="256" r="252" fill="#0D2240"/>
+  <circle cx="256" cy="256" r="232" fill="none" stroke="#BD9B60" stroke-width="3"/>
+
+  <g clip-path="url(#inside)">
+    <!-- Sky -->
+    <rect x="0" y="0" width="512" height="512" fill="url(#sky)"/>
+
+    <!-- Sun glow halo -->
+    <circle cx="256" cy="230" r="160" fill="url(#sunGlow)"/>
+
+    <!-- Sun -->
+    <circle cx="256" cy="230" r="78" fill="#FFE066"/>
+    <circle cx="256" cy="230" r="78" fill="none" stroke="#FFB347" stroke-width="2" opacity="0.6"/>
+
+    <!-- Wispy clouds -->
+    <ellipse cx="120" cy="200" rx="50" ry="6" fill="#FFFFFF" opacity="0.55"/>
+    <ellipse cx="380" cy="180" rx="60" ry="7" fill="#FFFFFF" opacity="0.5"/>
+
+    <!-- Seagulls -->
+    <g stroke="#0D2240" stroke-width="2.5" fill="none" stroke-linecap="round">
+      <path d="M 150,130 q 7,-9 14,0 q 7,-9 14,0"/>
+      <path d="M 370,150 q 5,-7 10,0 q 5,-7 10,0"/>
+      <path d="M 408,108 q 4,-6 8,0 q 4,-6 8,0"/>
+    </g>
+
+    <!-- Sun reflection on water -->
+    <path d="M 220,335 L 292,335 L 305,470 L 207,470 Z" fill="#FFE066" opacity="0.32"/>
+
+    <!-- Ocean -->
+    <path d="M -10,330 Q 130,318 256,328 Q 380,338 522,322 L 522,520 L -10,520 Z" fill="url(#ocean)"/>
+
+    <!-- Ship (centered, sailing on the horizon) -->
+    <g transform="translate(180, 285)">
+      <!-- Hull -->
+      <path d="M 6,40 L 146,40 L 134,58 L 18,58 Z" fill="#0D2240"/>
+      <rect x="10" y="44" width="132" height="3" fill="#BD9B60"/>
+      <!-- Main body -->
+      <rect x="16" y="22" width="120" height="20" fill="#F8F6F1"/>
+      <!-- Portholes -->
+      <g fill="#0D2240">
+        <circle cx="26"  cy="32" r="2.5"/>
+        <circle cx="38"  cy="32" r="2.5"/>
+        <circle cx="50"  cy="32" r="2.5"/>
+        <circle cx="62"  cy="32" r="2.5"/>
+        <circle cx="74"  cy="32" r="2.5"/>
+        <circle cx="86"  cy="32" r="2.5"/>
+        <circle cx="98"  cy="32" r="2.5"/>
+        <circle cx="110" cy="32" r="2.5"/>
+        <circle cx="122" cy="32" r="2.5"/>
+      </g>
+      <!-- Upper deck -->
+      <rect x="34" y="8" width="84" height="14" fill="#F8F6F1"/>
+      <rect x="40" y="12" width="72" height="5" fill="#3FB8AF"/>
+      <!-- Funnels -->
+      <rect x="50" y="-18" width="14" height="26" fill="#0D2240"/>
+      <rect x="88" y="-18" width="14" height="26" fill="#0D2240"/>
+      <rect x="50" y="-18" width="14" height="4"  fill="#BD9B60"/>
+      <rect x="88" y="-18" width="14" height="4"  fill="#BD9B60"/>
+      <!-- Mast + flag -->
+      <line x1="76" y1="-22" x2="76" y2="-44" stroke="#0D2240" stroke-width="2"/>
+      <path d="M 76,-44 L 92,-40 L 76,-36 Z" fill="#E63946"/>
+    </g>
+
+    <!-- Ship wake -->
+    <path d="M 140,360 Q 256,353 372,365" stroke="#F8F6F1" stroke-width="3" fill="none" opacity="0.7"/>
+    <path d="M 165,378 Q 256,372 350,382" stroke="#F8F6F1" stroke-width="2" fill="none" opacity="0.5"/>
+
+    <!-- Wave details -->
+    <path d="M -10,420 Q 60,412 120,420 T 250,420 T 380,420 T 522,415" stroke="#F8F6F1" stroke-width="2" fill="none" opacity="0.55"/>
+    <path d="M -10,455 Q 70,448 140,455 T 280,455 T 420,455 T 522,450" stroke="#F8F6F1" stroke-width="2" fill="none" opacity="0.4"/>
+
+    <!-- Palm tree LEFT -->
+    <g transform="translate(50,360)">
+      <path d="M 8,140 Q 0,80 6,20 Q 8,8 14,0" stroke="#7A4F2B" stroke-width="9" fill="none" stroke-linecap="round"/>
+      <g fill="#2E8B57" stroke="#0E5A36" stroke-width="1.2" stroke-linejoin="round">
+        <path d="M 14,0 Q -25,-12 -52,-2 Q -30,2 -10,8 Q 0,5 14,0"/>
+        <path d="M 14,0 Q 42,-22 70,-26 Q 50,-8 28,0 Q 20,1 14,0"/>
+        <path d="M 14,0 Q -8,-32 -22,-54 Q -4,-32 4,-15 Q 10,-5 14,0"/>
+        <path d="M 14,0 Q 30,-32 55,-52 Q 36,-25 24,-10 Q 18,-3 14,0"/>
+        <path d="M 14,0 Q -22,8 -48,22 Q -22,12 -2,8 Q 8,5 14,0"/>
+      </g>
+      <circle cx="8"  cy="3" r="3.5" fill="#5D4037"/>
+      <circle cx="16" cy="5" r="3.5" fill="#5D4037"/>
+    </g>
+
+    <!-- Palm tree RIGHT (mirrored) -->
+    <g transform="translate(462,365) scale(-1, 1)">
+      <path d="M 8,140 Q 0,80 6,20 Q 8,8 14,0" stroke="#7A4F2B" stroke-width="9" fill="none" stroke-linecap="round"/>
+      <g fill="#2E8B57" stroke="#0E5A36" stroke-width="1.2" stroke-linejoin="round">
+        <path d="M 14,0 Q -25,-12 -52,-2 Q -30,2 -10,8 Q 0,5 14,0"/>
+        <path d="M 14,0 Q 42,-22 70,-26 Q 50,-8 28,0 Q 20,1 14,0"/>
+        <path d="M 14,0 Q -8,-32 -22,-54 Q -4,-32 4,-15 Q 10,-5 14,0"/>
+        <path d="M 14,0 Q 30,-32 55,-52 Q 36,-25 24,-10 Q 18,-3 14,0"/>
+        <path d="M 14,0 Q -22,8 -48,22 Q -22,12 -2,8 Q 8,5 14,0"/>
+      </g>
+      <circle cx="8"  cy="3" r="3.5" fill="#5D4037"/>
+      <circle cx="16" cy="5" r="3.5" fill="#5D4037"/>
+    </g>
+  </g>
+
+  <!-- Curved wordmark along bottom of rim -->
+  <text fill="#BD9B60" font-family="'Cormorant Garamond', Georgia, 'Times New Roman', serif"
+        font-size="34" font-weight="700" letter-spacing="8">
+    <textPath href="#bottomcurve" startOffset="50%" text-anchor="middle">CRUISE · CONTROL</textPath>
+  </text>
+
+  <!-- Tiny anchor accents at the top of the rim -->
+  <g fill="#BD9B60" transform="translate(256,38)">
+    <circle cx="0" cy="0" r="4"/>
+    <path d="M 0,4 L 0,18 M -8,18 Q 0,26 8,18" stroke="#BD9B60" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+  </g>
+</svg>

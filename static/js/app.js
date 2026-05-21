@@ -270,10 +270,10 @@ $( document ).ready(function() {
 
     function renderInsightsStats(s) {
         function tile(value, label, sub) {
-            var subHtml = sub ? '<span class="tile-sub">' + sub + '</span>' : '';
+            var subHtml = sub ? '<span class="tile-sub">' + escapeHtml(sub) + '</span>' : '';
             return '<div class="insights-tile">' +
-                   '<div class="tile-value">' + value + '</div>' +
-                   '<div class="tile-label">' + label + '</div>' +
+                   '<div class="tile-value">' + escapeHtml(value) + '</div>' +
+                   '<div class="tile-label">' + escapeHtml(label) + '</div>' +
                    subHtml + '</div>';
         }
         var mostLine = s.most_cruised_line
